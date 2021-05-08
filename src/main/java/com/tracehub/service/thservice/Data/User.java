@@ -17,4 +17,5 @@ public class User {
     @Id
     String name;
     String password;
+
 }
