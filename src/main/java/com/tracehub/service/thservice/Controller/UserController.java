@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.websocket.server.PathParam;
+
 import com.tracehub.service.thservice.Data.User;
 import com.tracehub.service.thservice.Repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +51,21 @@ public class UserController {
             }
         }
         msg.put("msg", "wrong");
+        return msg;
+    }
+    @GetMapping("/user")
+    public Map<String,Object> getUser(@PathParam("name") String name)
+    {
+        Map<String,Object> msg = new HashMap<String,Object>();
+        Optional<User> ret = uRepository.findById(name);
+        boolean find = !ret.isEmpty();
+        if(find)
+        {
+            msg.put("msg", "existed");
+            msg.put("data", ret.get());
+            return msg;
+        }
+        msg.put("msg", "empty");
         return msg;
     }
 }
